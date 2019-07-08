@@ -1,0 +1,59 @@
+Sub insertARowAbove(control As IRibbonControl)
+    ActiveCell.EntireRow.Select
+    On Error GoTo Last
+    Selection.Insert Shift:=xlToDown, CopyOrigin:=xlFormatFromRightorAbove
+Last:     Exit Sub
+End Sub
+Sub insertAColumnLeft(control As IRibbonControl)
+    ActiveCell.EntireColumn.Select
+    On Error GoTo Last
+    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromRightorAbove
+Last:     Exit Sub
+End Sub
+Sub insertRowsWithOneRow(control As IRibbonControl)
+    Dim answer As Variant
+LableNumber:
+    answer = Application.InputBox("กรอกจำนวนแถว", "เพิ่มข้อมูลโดยคัดลอกจากแถวเดียว", , , , , , 1)
+    If IsNumeric(answer) Then
+        If IsEmpty(answer) Then
+            MsgBox "ข้อมูลที่กรอกควรมีค่าตั้งแต่ 1 ขึ้นไป", vbOKOnly, "เพิ่มข้อมูลโดยคัดลอกจากแถวเดียวที่เลือก"
+            GoTo LableNumber:
+        Else
+            If answer < 0 Then
+                MsgBox "ข้อมูลที่กรอกควรมีค่าตั้งแต่ 1 ขึ้นไป", vbOKOnly, "เพิ่มข้อมูลโดยคัดลอกจากแถวเดียวที่เลือก"
+                GoTo LableNumber:
+            ElseIf answer > 0 Then
+                ActiveCell.EntireRow.Copy
+                Range(ActiveCell.Offset(1, 0), ActiveCell.Offset(answer, 0)).EntireRow.Insert Shift:=xlDown
+                Application.CutCopyMode = False
+            End If
+        End If
+    End If
+End Sub
+Sub AutoFitRow(control As IRibbonControl)
+    Dim selectedCell As Range
+    Set selectedCell = Application.ActiveCell
+    Range(Cells(selectedCell.Row, selectedCell.Column), Cells(selectedCell.Row, selectedCell.Column)).Select
+    Selection.Rows.AutoFit
+End Sub
+Sub AutoFitAllRows(control As IRibbonControl)
+    Rows().AutoFit
+End Sub
+Sub AutoFitColumn(control As IRibbonControl)
+    Dim selectedCell As Range
+    Set selectedCell = Application.ActiveCell
+    Range(Cells(selectedCell.Row, selectedCell.Column), Cells(selectedCell.Row, selectedCell.Column)).Select
+    Selection.Columns.AutoFit
+End Sub
+Sub AutoFitAllColumns(control As IRibbonControl)
+    Columns().AutoFit
+End Sub
+Sub OpenCalculator(control As IRibbonControl)
+    Application.ActivateMicrosoftApp Index:=0
+End Sub
+Sub helpMsgBox(control As IRibbonControl)
+    MsgBox "Insertion : Insert row above" & vbTab & "เพิ่มแถวเหนือเซลล์หรือแถวที่เลือก" & vbCrLf & vbTab & vbTab & "Insert column left" & vbTab & "เพิ่มคอลัมน์ด้านซ้ายของเซลล์หรือคอลัมน์ที่เลือก" & vbCrLf & "Duplication : Duplicate a specific row" & vbTab & "คัดลอกข้อมูลแถวที่เลือกมาวางแถวถัดมาตามจำนวนแถวที่ต้องการ" & vbCrLf & "Autofit :" & vbTab & "Autofit a Row Height" & vbTab & "ปรับขนาดแนวนอนให้พอดีกับข้อมูล" & vbCrLf & vbTab & "Autofit every Row Height" & vbTab & "ปรับขนาดแนวนอนให้พอดีกับข้อมูลทุกแถว" & vbCrLf & vbTab & "Autofit a Column Width" & vbTab & "ปรับขนาดแนวตั้งให้พอดีกับข้อมูล" & vbCrLf & vbTab & "Autofit every Column Width" & vbTab & "ปรับขนาดแนวตั้งให้พอดีกับข้อมูลทุกคอลัมน์" & vbCrLf & "Tool :" & vbTab & "Calculator" & vbTab & vbTab & "เปิดเครื่องคิดเลข" & vbCrLf & "About :" & vbTab & "Help" & vbTab & vbTab & vbTab & "อธิบายความสามารถของฟังก์ชันต่างๆ" & vbCrLf & vbTab & "Info" & vbTab & vbTab & vbTab & "ข้อมูลของ Add-In", vbOKOnly, "วิธีใช้ Add-In"
+End Sub
+Sub aboutMsgBox(control As IRibbonControl)
+    MsgBox vbTab & "จัดทำขึ้นเพื่ออำนวยความสะดวกในการจัดการข้อมูลบนตาราง" & vbCrLf & "โดยเป็นโปรเจกต์ในการฝึกงานภาคฤดูร้อนปีพ.ศ.2562" & vbCrLf & "ของนิสิตมหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา", vbOKOnly, "ข้อมูลเกี่ยวกับ Add-In"
+End Sub
